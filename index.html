@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<title>JC History 2026 Predictions</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: #0a0a0f;
+    color: #e2e8f0;
+    font-family: Georgia, 'Times New Roman', serif;
+    min-height: 100vh;
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: #0a0a0f; }
+  ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%);
+    border-bottom: 1px solid #334155;
+    padding: 3rem 1.25rem 1.5rem;
+    padding-top: calc(3rem + env(safe-area-inset-top));
+    text-align: center;
+  }
+  .header-eyebrow {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: #64748b;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    font-family: monospace;
+  }
+  .header h1 {
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    font-weight: bold;
+    margin: 0 0 0.25rem;
+    background: linear-gradient(90deg, #e2e8f0, #a78bfa, #e2e8f0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.02em;
+  }
+  .header p {
+    color: #64748b;
+    font-size: 0.72rem;
+    margin: 0;
+    font-family: monospace;
+  }
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 2.5rem;
+    margin-top: 1.2rem;
+    flex-wrap: wrap;
+  }
+  .stat-count { font-size: 1.8rem; font-weight: bold; font-family: monospace; }
+  .stat-label { font-size: 0.6rem; color: #64748b; letter-spacing: 0.05em; margin-top: 2px; }
+
+  /* FILTERS */
+  .filters {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #0a0a0f;
+    border-bottom: 1px solid #1e293b;
+  }
+  .filter-btn {
+    padding: 0.45rem 1.1rem;
+    border-radius: 999px;
+    border: 1px solid #334155;
+    background: transparent;
+    color: #64748b;
+    cursor: pointer;
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    font-family: monospace;
+    transition: all 0.15s;
+    -webkit-appearance: none;
+  }
+  .filter-btn.active {
+    border-color: #a78bfa;
+    background: #1e1b4b;
+    color: #a78bfa;
+  }
+
+  /* CARDS */
+  .cards {
+    padding: 0.75rem 0.9rem 4rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  .card {
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    cursor: default;
+    transition: opacity 0.15s;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .card.tappable { cursor: pointer; }
+  .card.tappable:active { opacity: 0.8; }
+  .card.hidden { display: none; }
+
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .card-meta { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+  .badge-level {
+    font-size: 0.58rem;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-family: monospace;
+    letter-spacing: 0.1em;
+  }
+  .badge-strand {
+    font-size: 0.58rem;
+    color: #475569;
+    font-family: monospace;
+  }
+  .card-title {
+    font-size: 0.95rem;
+    font-weight: bold;
+    margin-top: 0.3rem;
+    color: #e2e8f0;
+    line-height: 1.3;
+  }
+  .chevron { font-size: 0.7rem; margin-top: 0.25rem; flex-shrink: 0; }
+
+  /* Year badges */
+  .years {
+    display: flex;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .year-badge {
+    font-size: 0.58rem;
+    font-family: monospace;
+    padding: 0.18rem 0.45rem;
+    border-radius: 4px;
+  }
+
+  .card-note {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    margin-top: 0.4rem;
+    line-height: 1.45;
+    font-family: Georgia, serif;
+  }
+
+  /* Key points */
+  .key-points {
+    margin-top: 0.7rem;
+    padding-top: 0.7rem;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease;
+  }
+  .key-points.open { max-height: 300px; }
+  .key-points-label {
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    font-family: monospace;
+  }
+  .key-point {
+    font-size: 0.75rem;
+    color: #cbd5e1;
+    padding: 0.2rem 0;
+    display: flex;
+    gap: 0.4rem;
+    line-height: 1.4;
+  }
+  .key-point-arrow { flex-shrink: 0; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 1rem 1.25rem;
+    color: #334155;
+    font-size: 0.58rem;
+    letter-spacing: 0.05em;
+    border-top: 1px solid #1e293b;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">Junior Certificate History · Common Level · Pattern Analysis</div>
+  <h1>2026 Exam Predictions</h1>
+  <p>Based on SEC papers 2022 · 2023 · 2024 · 2025 — topics longest absent rank highest</p>
+  <div class="stats">
+    <div>
+      <div class="stat-count" style="color:#4ade80" id="count-hot">0</div>
+      <div class="stat-label">🔥 High</div>
+    </div>
+    <div>
+      <div class="stat-count" style="color:#fbbf24" id="count-warm">0</div>
+      <div class="stat-label">⚡ Medium</div>
+    </div>
+    <div>
+      <div class="stat-count" style="color:#818cf8" id="count-cold">0</div>
+      <div class="stat-label">❄️ Low</div>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="ALL">SHOW ALL</button>
+  <button class="filter-btn" data-filter="HOT">🔥 HIGH</button>
+  <button class="filter-btn" data-filter="WARM">⚡ MEDIUM</button>
+  <button class="filter-btn" data-filter="COLD">❄️ LOW</button>
+</div>
+
+<div class="cards" id="cards"></div>
+
+<footer>SOURCE: SEC JC History Papers 2022–2025 · juniorcyclehistory.ie · Pattern analysis only — not official SEC guidance</footer>
+
+<script>
+const data = [
+  { topic:"Archaeology / Working with Evidence", strand:"S1", appeared:{2022:"Q1",2023:"Q1",2024:"Q2/Q6",2025:"Q1"}, prediction:"HOT", note:"Appears EVERY year — certain fixture. Expect Q1.", keyPoints:["How archaeologists date artefacts","Primary vs secondary sources","How to evaluate evidence","Archive methods"] },
+  { topic:"WWI or WWII", strand:"S3", appeared:{2022:"–",2023:"Q5",2024:"–",2025:"–"}, prediction:"HOT", note:"Only appeared once (2023). 2 years without it — very overdue.", keyPoints:["Causes of war (MAIN/GANG)","Trench warfare / Blitzkrieg","Ireland's involvement","Key events timeline"] },
+  { topic:"Nationalism & Unionism 1911–23", strand:"S2", appeared:{2022:"Q6",2023:"Q4",2024:"Q5*",2025:"–"}, prediction:"HOT", note:"Appeared 3 of 4 years. Absent in 2025 — almost certain to return. Easter Rising, War of Independence, Treaty, Civil War.", keyPoints:["Easter Rising causes & consequences","War of Independence 1919–21","Anglo-Irish Treaty debate","Irish Civil War"] },
+  { topic:"The Holocaust", strand:"S3", appeared:{2022:"Q7*",2023:"Q6",2024:"–",2025:"–"}, prediction:"HOT", note:"Not tested in 2024 or 2025. Two years overdue.", keyPoints:["Nazi persecution steps (1933–45)","Concentration/death camps","Survivors' testimonies as evidence","Why it must be remembered"] },
+  { topic:"The Troubles in Northern Ireland", strand:"S2", appeared:{2022:"–",2023:"Q7",2024:"–",2025:"–"}, prediction:"HOT", note:"Only appeared 2023. Two years overdue.", keyPoints:["Causes: discrimination, civil rights","Bloody Sunday","Peace process & Good Friday Agreement","Sutton Index / documenting evidence"] },
+  { topic:"1798 Rebellion", strand:"S2", appeared:{2022:"Q4",2023:"–",2024:"–",2025:"–"}, prediction:"HOT", note:"Only appeared in 2022. Three years without — very overdue.", keyPoints:["United Irishmen & Wolfe Tone","French support","Battle of Vinegar Hill","Consequences for Ireland"] },
+  { topic:"Ancient Rome / Ancient Civilisation", strand:"S3", appeared:{2022:"Q1*",2023:"Q1*",2024:"–",2025:"–"}, prediction:"HOT", note:"Ancient Rome as a standalone has never appeared. Overdue.", keyPoints:["Roman achievements: law, roads, aqueducts","Roman army & conquest","Julius Caesar / Augustus","Legacy of Rome in Europe"] },
+  { topic:"The GAA", strand:"S2", appeared:{2022:"Q8*",2023:"Q8",2024:"–",2025:"–"}, prediction:"WARM", note:"Last appeared 2023. Part of 'sporting/cultural/social movement' question — could return as Q8.", keyPoints:["Founding 1884 (Thurles)","Role in Irish identity","GAA and political links","Women in GAA (camogie)"] },
+  { topic:"The 1960s (Ireland/Europe/World)", strand:"S2/S3", appeared:{2022:"Q8*",2023:"–",2024:"Q8",2025:"–"}, prediction:"WARM", note:"Appeared 2022 and 2024 (every 2 years in Q8). Pattern suggests 2026 is possible again.", keyPoints:["Lemass & economic growth in Ireland","Civil rights movement (USA)","Space race","Cultural change / youth culture"] },
+  { topic:"Life in a Communist / Fascist State", strand:"S3", appeared:{2022:"Q7",2023:"–",2024:"Q7",2025:"–"}, prediction:"WARM", note:"Appeared in 2022 and 2024 (every 2 years). Pattern suggests 2026 could see it again.", keyPoints:["Stalin: collectivisation, gulags, purges","Hitler: Nuremberg Laws, propaganda, youth groups","Mussolini: fascism in Italy","Propaganda as a tool of control"] },
+  { topic:"Parliamentary Tradition / Parnell", strand:"S2", appeared:{2022:"–",2023:"–",2024:"Q5",2025:"–"}, prediction:"WARM", note:"Only appeared once (2024). Could return — Parnell & Home Rule is examinable.", keyPoints:["Parnell & Land League","Home Rule bills (1886, 1893, 1912)","O'Connell & Catholic Emancipation","Parliamentary methods vs armed rebellion"] },
+  { topic:"The Renaissance", strand:"S3", appeared:{2022:"Q2",2023:"–",2024:"–",2025:"–"}, prediction:"WARM", note:"Only appeared 2022. Three years without — possible but less exam-weight than other topics.", keyPoints:["Humanist thinkers","Art: Da Vinci, Michelangelo","Printing press impact","Contrast with medieval worldview"] },
+  { topic:"EU or UN", strand:"S2/S3", appeared:{2022:"–",2023:"–",2024:"–",2025:"–"}, prediction:"WARM", note:"Never appeared in any exam 2022–2025. Wild card — could appear but hard to predict format.", keyPoints:["Origins of EU after WWII","Ireland's accession 1973","UN peacekeeping","Benefits of European integration"] },
+  { topic:"The Reformation", strand:"S3", appeared:{2022:"–",2023:"Q2",2024:"–",2025:"Q2"}, prediction:"COLD", note:"Just appeared in 2025 as Q2. Very unlikely to repeat.", keyPoints:[] },
+  { topic:"Conquest & Colonisation / Ulster Plantation", strand:"S2/S3", appeared:{2022:"Q3",2023:"–",2024:"Q3",2025:"Q3"}, prediction:"COLD", note:"Appeared in 2025 (Ulster Plantation). Skip in 2026.", keyPoints:[] },
+  { topic:"French Revolution", strand:"S3", appeared:{2022:"Q4*",2023:"–",2024:"–",2025:"Q4"}, prediction:"COLD", note:"Just appeared as Q4 in 2025.", keyPoints:[] },
+  { topic:"The Great Famine", strand:"S2", appeared:{2022:"Q5",2023:"Q3",2024:"–",2025:"Q5"}, prediction:"COLD", note:"Appeared 3 out of 4 years including 2025. Very unlikely.", keyPoints:[] },
+  { topic:"Women in 20th-Century Ireland", strand:"S2", appeared:{2022:"–",2023:"–",2024:"–",2025:"Q6"}, prediction:"COLD", note:"Just appeared in 2025.", keyPoints:[] },
+  { topic:"The Cold War", strand:"S3", appeared:{2022:"–",2023:"–",2024:"–",2025:"Q7"}, prediction:"COLD", note:"Just appeared in 2025.", keyPoints:[] },
+  { topic:"Patterns of Change", strand:"S2/S3", appeared:{2022:"–",2023:"–",2024:"–",2025:"Q8"}, prediction:"COLD", note:"Just appeared in 2025.", keyPoints:[] },
+];
+
+const years = [2022, 2023, 2024, 2025];
+
+const theme = {
+  HOT:  { bg:"#052e16", text:"#4ade80", label:"🔥 HIGH",    border:"#16a34a" },
+  WARM: { bg:"#431407", text:"#fbbf24", label:"⚡ MEDIUM",  border:"#d97706" },
+  COLD: { bg:"#0f172a", text:"#818cf8", label:"❄️ LOW",     border:"#4338ca" },
+};
+
+// Count
+document.getElementById('count-hot').textContent  = data.filter(t=>t.prediction==='HOT').length;
+document.getElementById('count-warm').textContent = data.filter(t=>t.prediction==='WARM').length;
+document.getElementById('count-cold').textContent = data.filter(t=>t.prediction==='COLD').length;
+
+// Build cards
+const container = document.getElementById('cards');
+
+data.forEach(t => {
+  const c = theme[t.prediction];
+  const hasPoints = t.keyPoints && t.keyPoints.length > 0;
+
+  const card = document.createElement('div');
+  card.className = 'card' + (hasPoints ? ' tappable' : '');
+  card.dataset.prediction = t.prediction;
+  card.style.cssText = `background:${c.bg};border:1px solid ${c.border}55;border-left:3px solid ${c.border};`;
+
+  // Year badges HTML
+  const yearBadges = years.map(y => {
+    const val = t.appeared[y] || '–';
+    const hit = val !== '–';
+    return `<span class="year-badge" style="background:${hit?c.border+'33':'#1e293b'};color:${hit?c.text:'#475569'};border:1px solid ${hit?c.border+'55':'#334155'}">${y}: ${val}</span>`;
+  }).join('');
+
+  // Key points HTML
+  const pointsHTML = hasPoints ? t.keyPoints.map(kp =>
+    `<div class="key-point"><span class="key-point-arrow" style="color:${c.text}">›</span>${kp}</div>`
+  ).join('') : '';
+
+  card.innerHTML = `
+    <div class="card-top">
+      <div style="flex:1">
+        <div class="card-meta">
+          <span class="badge-level" style="background:${c.border}33;color:${c.text}">${c.label}</span>
+          <span class="badge-strand">${t.strand}</span>
+        </div>
+        <div class="card-title">${t.topic}</div>
+      </div>
+      ${hasPoints ? `<div class="chevron" style="color:${c.text}" aria-label="expand">▼</div>` : ''}
+    </div>
+    <div class="years">${yearBadges}</div>
+    <div class="card-note">${t.note}</div>
+    ${hasPoints ? `
+      <div class="key-points" style="border-top:1px solid ${c.border}33">
+        <div class="key-points-label" style="color:${c.text}">Key Points to Know</div>
+        ${pointsHTML}
+      </div>
+    ` : ''}
+  `;
+
+  if (hasPoints) {
+    card.addEventListener('click', () => {
+      const kp = card.querySelector('.key-points');
+      const ch = card.querySelector('.chevron');
+      const isOpen = kp.classList.contains('open');
+      kp.classList.toggle('open', !isOpen);
+      ch.textContent = isOpen ? '▼' : '▲';
+    });
+  }
+
+  container.appendChild(card);
+});
+
+// Filter logic
+let activeFilter = 'ALL';
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    activeFilter = btn.dataset.filter;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    document.querySelectorAll('.card').forEach(card => {
+      const pred = card.dataset.prediction;
+      card.classList.toggle('hidden', activeFilter !== 'ALL' && pred !== activeFilter);
+    });
+  });
+});
+</script>
+</body>
+</html>
